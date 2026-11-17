@@ -462,3 +462,34 @@ h2 { color: var(--color-ink); }
 .hero__links .btn--tg, .hero__links .btn--ig, .book .btn--tg, .book .btn--ig { color: var(--color-wa-ink); text-decoration: none; }
 .gallery__grid figure, .gallery__grid figure:nth-child(even) { margin-top: 0; border-radius: 999px 999px var(--radius-card) var(--radius-card) / 30% 30% var(--radius-card) var(--radius-card); }
 .gallery__grid figure:nth-child(even) { margin-top: var(--space-2xl); }
+
+/* ================= polish pass: true arches, calm buttons, ornaments ================= */
+.frame, .gallery__grid figure, .gallery__grid figure:nth-child(even), .book__photo, .about__photo, .love__kiss { border: 0; border-radius: 999px 999px var(--radius-card) var(--radius-card); outline: var(--rule-hair) solid var(--color-accent); outline-offset: 7px; background: var(--color-card-back); box-shadow: 0 0 0 7px var(--color-paper), var(--shadow-deep); }
+.gallery__grid { gap: var(--space-xl); padding-inline: var(--space-xs); }
+.gallery__grid figure { aspect-ratio: 3 / 4.2; }
+.gallery__grid figure > img, .about__photo > img, .book__photo > img { object-position: 50% 0%; }
+.about__photo, .book__photo { aspect-ratio: 3 / 4.2; max-width: 400px; }
+.love__kiss { aspect-ratio: 3 / 4; }
+
+.btn--tg, .btn--ig, .hero__links .btn--tg, .hero__links .btn--ig, .book .btn--tg, .book .btn--ig { background: var(--color-paper); border-color: var(--color-accent); color: var(--color-ink); }
+@media (hover: hover) and (pointer: fine) { .btn--tg:hover, .btn--ig:hover { background: var(--color-paper-3); } }
+
+.services h2, .gallery h2, .how h2 { max-width: none; text-align: center; }
+.services h2::after, .gallery h2::after, .how h2::after { content: "✦"; display: block; width: auto; height: auto; margin-top: var(--space-sm); color: var(--color-accent); font-size: 1rem; line-height: 1; background: linear-gradient(to right, transparent, var(--color-accent) 25%, var(--color-accent) 44%, transparent 44%, transparent 56%, var(--color-accent) 56%, var(--color-accent) 75%, transparent) center / 280px 1px no-repeat; }
+.svc { text-align: center; align-items: center; padding-top: calc(var(--space-4xl) + var(--space-md)); }
+.svc__card { left: 50%; margin-left: -52px; width: 104px; top: calc(-1 * var(--space-2xl)); transform: rotate(-4deg); }
+.svcs { margin-top: calc(var(--space-3xl) + var(--space-xl)); }
+.steps { border-top: 0; }
+.steps li { text-align: center; border-left: 0; padding-inline: var(--space-md); }
+.steps li::before { margin-inline: auto; margin-bottom: var(--space-md); display: grid; place-items: center; width: 96px; height: 96px; border-radius: 50%; border: var(--rule-hair) solid var(--color-accent); font-size: 2.5rem; background: var(--color-paper-2); }
+.steps h3 { max-width: none; }
+@media (max-width: 60rem) {
+  .gallery__grid { gap: var(--space-lg); }
+  .steps li:nth-child(n + 3) { border-top: 0; }
+  .svcs { row-gap: calc(var(--space-3xl) + var(--space-md)); }
+}
+@media (max-width: 40rem) {
+  .svc__card { margin-left: -40px; width: 80px; left: 50%; }
+  .steps li, .steps li:nth-child(even) { display: block; border-top: 0; padding: var(--space-md) 0; }
+  .steps li::before { width: 72px; height: 72px; font-size: 2rem; }
+}
