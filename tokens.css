@@ -16,5 +16,5 @@
   --font-display: "Cormorant Garamond", Georgia, serif; --font-body: "Sofia Sans", ui-sans-serif, sans-serif;
   --font-outlier: var(--font-body);
   --radius-card: 12px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
-  --nav-h: 72px; --shadow-deep: 0 18px 40px oklch(5% 0.02 25 / 0.65); --font-script: "Marck Script", "Cormorant Garamond", cursive; --gold-ramp: linear-gradient(100deg, oklch(70% 0.11 70), oklch(88% 0.1 90) 50%, oklch(72% 0.115 75)); --tracking-display: -0.015em; --display-weight: 400; --grain: 0.06;
+  --nav-h: 72px; --color-wa: oklch(68% 0.17 150); --color-wa-hover: oklch(74% 0.17 150); --color-wa-ink: oklch(99% 0.01 150); --shadow-deep: 0 18px 40px oklch(5% 0.02 25 / 0.65); --font-script: "Marck Script", "Cormorant Garamond", cursive; --gold-ramp: linear-gradient(100deg, oklch(70% 0.11 70), oklch(88% 0.1 90) 50%, oklch(72% 0.115 75)); --tracking-display: -0.015em; --display-weight: 400; --grain: 0.06;
 }

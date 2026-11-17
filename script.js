@@ -117,19 +117,6 @@
     }
   }
 
-  /* ---- hero: her portrait, once the file is in the folder ---- */
-  const arch = document.querySelector('[data-arch] [data-slot="portrait"]');
-  if (arch) {
-    const me = new Image();
-    me.onload = () => {
-      me.alt = 'Раиса, таролог';
-      me.style.objectPosition = '50% 20%';
-      arch.querySelectorAll(':scope > img').forEach((o) => o.remove());
-      arch.prepend(me);
-    };
-    me.src = 'images/portrait.jpg';
-  }
-
   /* ---- the question a visitor brings to the cards ---- */
   const QUESTIONS = {
     love: ['Что он на самом деле чувствует?', 'Вернётся ли человек из прошлого?', 'Когда я встречу своего человека?', 'Что мешает нашим отношениям?'],
@@ -224,6 +211,7 @@
     const setText = (i) => {
       const c = ARCANA[i];
       name.textContent = c[1];
+      document.dispatchEvent(new CustomEvent('card-drawn', { detail: c[1] }));
       line.textContent = c[2];
       ask.textContent = c[3];
     };
@@ -312,31 +300,26 @@
     btn.addEventListener('click', run);
   }
 
-  /* ---- booking: the row a visitor picked sets the word to send ---- */
-  const code = document.querySelector('[data-code]');
-  const copyBtn = document.querySelector('[data-copy]');
-  const copyNote = document.querySelector('[data-copy-note]');
-  let word = code ? code.textContent : '';
-  onQuestion.push((q) => { word = q; if (code) code.textContent = q; if (copyNote) copyNote.textContent = ''; });
+  /* ---- WhatsApp: the chosen question and the drawn card travel in the message ---- */
+  const WA = 'https://wa.me/77773000738?text=';
+  const waMain = document.querySelector('[data-wa-main]');
+  const waBook = document.querySelector('[data-draw-book]');
+  let drawn = '';
+  const syncWa = () => {
+    let msg = 'Здравствуйте! Хочу записаться на расклад.';
+    if (question) msg += ' Мой вопрос: ' + question;
+    if (drawn) msg += ' Мне выпала карта: ' + drawn + '.';
+    const url = WA + encodeURIComponent(msg);
+    if (waMain) waMain.href = url;
+    if (waBook) waBook.href = url;
+  };
+  onQuestion.push(syncWa);
+  document.addEventListener('card-drawn', (e) => { drawn = e.detail; syncWa(); });
 
-  document.querySelectorAll('[data-topic]').forEach((a) => {
-    a.addEventListener('click', () => {
-      const topic = a.dataset.topic;
-      word = topic === 'Годовой расклад' ? '2027' : topic;
-      if (code) code.textContent = word;
-      if (copyNote) copyNote.textContent = '';
-    });
+  /* ---- copy protection: no context menu, no dragging, no copying ---- */
+  ['contextmenu', 'dragstart', 'copy', 'cut'].forEach((type) => {
+    document.addEventListener(type, (e) => e.preventDefault());
   });
-
-  if (copyBtn && navigator.clipboard) {
-    copyBtn.hidden = false;
-    copyBtn.addEventListener('click', () => {
-      navigator.clipboard.writeText(word).then(
-        () => { copyNote.textContent = '«' + word + '» скопировано. Вставьте в сообщение.'; },
-        () => { copyNote.textContent = 'Не получилось скопировать. Наберите слово вручную.'; }
-      );
-    });
-  }
 
   /* ---- sticky booking bar: on once the hero is gone, off at the booking ---- */
   const bar = document.querySelector('[data-bookbar]');
