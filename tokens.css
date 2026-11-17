@@ -9,10 +9,10 @@
   --color-error: oklch(72% 0.15 27); --color-success: oklch(76% 0.13 150);
   --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
-  --color-paper: oklch(97.5% 0.014 85); --color-paper-2: oklch(94.5% 0.024 82); --color-paper-3: oklch(91% 0.034 80);
+  --color-paper: oklch(99.4% 0.004 85); --color-paper-2: oklch(97.6% 0.014 85); --color-paper-3: oklch(94.5% 0.03 84);
   --color-ink: oklch(25% 0.035 40); --color-ink-2: oklch(38% 0.035 45); --color-muted: oklch(50% 0.035 55);
-  --color-rule: oklch(86% 0.04 80);
-  --color-accent: oklch(64% 0.115 75); --color-accent-deep: oklch(50% 0.1 70); --color-accent-ink: oklch(99% 0.01 85); --color-focus: oklch(55% 0.12 70); --color-accent-hover: oklch(58% 0.115 72); --color-card-back: oklch(32% 0.085 20); --color-rose: oklch(62% 0.16 15);
+  --color-rule: oklch(88% 0.045 82);
+  --color-accent: oklch(64% 0.115 75); --color-accent-deep: oklch(50% 0.1 70); --color-accent-ink: oklch(99% 0.01 85); --color-focus: oklch(55% 0.12 70); --color-accent-hover: oklch(58% 0.115 72); --color-card-back: oklch(32% 0.085 20); --color-tg: oklch(62% 0.14 240); --color-ig: oklch(56% 0.2 355); --color-rose: oklch(62% 0.16 15);
   --font-display: "Cormorant Garamond", Georgia, serif; --font-body: "Sofia Sans", ui-sans-serif, sans-serif;
   --font-outlier: var(--font-body);
   --radius-card: 16px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;

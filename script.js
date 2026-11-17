@@ -301,7 +301,7 @@
   }
 
   /* ---- WhatsApp: the chosen question and the drawn card travel in the message ---- */
-  const WA = 'https://wa.me/77773000738?text=';
+  const WA = 'https://wa.me/79181703656?text=';
   const waMain = document.querySelector('[data-wa-main]');
   const waBook = document.querySelector('[data-draw-book]');
   let drawn = '';
