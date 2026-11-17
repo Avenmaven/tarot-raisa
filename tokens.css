@@ -1,5 +1,5 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --space-3xs: 2px; --space-2xs: 4px; --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 40px; --space-2xl: 64px; --space-3xl: 96px; --space-4xl: 144px;
   --text-xs: 0.8125rem; --text-sm: 0.875rem; --text-md: 1rem; --text-lg: 1.25rem; --text-xl: 1.5625rem; --text-2xl: 1.953rem; --text-3xl: 2.441rem;
   --text-display-s: clamp(2.25rem, 4vw + 0.5rem, 3.75rem); --text-display: clamp(2.75rem, 5vw + 1rem, 5.25rem);
@@ -9,12 +9,12 @@
   --color-error: oklch(72% 0.15 27); --color-success: oklch(76% 0.13 150);
   --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
-  --color-paper: oklch(11.5% 0.022 25); --color-paper-2: oklch(15.5% 0.028 28); --color-paper-3: oklch(21% 0.034 32);
-  --color-ink: oklch(94% 0.02 88); --color-ink-2: oklch(84% 0.02 88); --color-muted: oklch(70% 0.03 60);
-  --color-rule: oklch(30% 0.035 40);
-  --color-accent: oklch(80% 0.115 82); --color-accent-deep: oklch(56% 0.09 80); --color-accent-ink: oklch(14% 0.025 30); --color-focus: oklch(80% 0.115 82); --color-accent-hover: oklch(86% 0.105 86);
+  --color-paper: oklch(97.5% 0.014 85); --color-paper-2: oklch(94.5% 0.024 82); --color-paper-3: oklch(91% 0.034 80);
+  --color-ink: oklch(25% 0.035 40); --color-ink-2: oklch(38% 0.035 45); --color-muted: oklch(50% 0.035 55);
+  --color-rule: oklch(86% 0.04 80);
+  --color-accent: oklch(64% 0.115 75); --color-accent-deep: oklch(50% 0.1 70); --color-accent-ink: oklch(99% 0.01 85); --color-focus: oklch(55% 0.12 70); --color-accent-hover: oklch(58% 0.115 72); --color-card-back: oklch(32% 0.085 20); --color-rose: oklch(62% 0.16 15);
   --font-display: "Cormorant Garamond", Georgia, serif; --font-body: "Sofia Sans", ui-sans-serif, sans-serif;
   --font-outlier: var(--font-body);
-  --radius-card: 12px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
-  --nav-h: 72px; --color-wa: oklch(68% 0.17 150); --color-wa-hover: oklch(74% 0.17 150); --color-wa-ink: oklch(99% 0.01 150); --shadow-deep: 0 18px 40px oklch(5% 0.02 25 / 0.65); --font-script: "Marck Script", "Cormorant Garamond", cursive; --gold-ramp: linear-gradient(100deg, oklch(70% 0.11 70), oklch(88% 0.1 90) 50%, oklch(72% 0.115 75)); --tracking-display: -0.015em; --display-weight: 400; --grain: 0.06;
+  --radius-card: 16px; --radius-pill: 999px; --rule-hair: 1px; --shadow-card: none;
+  --nav-h: 72px; --color-wa: oklch(60% 0.17 150); --color-wa-hover: oklch(55% 0.17 150); --color-wa-ink: oklch(99% 0.01 150); --shadow-deep: 0 18px 44px oklch(45% 0.06 60 / 0.22); --font-script: "Marck Script", "Cormorant Garamond", cursive; --gold-ramp: linear-gradient(100deg, oklch(52% 0.105 65), oklch(74% 0.12 85) 50%, oklch(54% 0.11 68)); --tracking-display: -0.015em; --display-weight: 400; --grain: 0.06;
 }

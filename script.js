@@ -45,7 +45,7 @@
   if (canvas && canvas.getContext) {
     const ctx = canvas.getContext('2d');
     const css = getComputedStyle(document.documentElement);
-    const ink = css.getPropertyValue('--color-ink').trim() || 'white';
+    const ink = css.getPropertyValue('--color-accent').trim() || 'goldenrod';
     const gold = css.getPropertyValue('--color-accent').trim() || ink;
     let stars = [];
     let w = 0, h = 0, raf = 0, visible = true, last = 0;
@@ -306,7 +306,7 @@
   const waBook = document.querySelector('[data-draw-book]');
   let drawn = '';
   const syncWa = () => {
-    let msg = 'Здравствуйте! Хочу записаться на расклад.';
+    let msg = 'Здравствуйте, Раиса! Хочу записаться на приём.';
     if (question) msg += ' Мой вопрос: ' + question;
     if (drawn) msg += ' Мне выпала карта: ' + drawn + '.';
     const url = WA + encodeURIComponent(msg);
