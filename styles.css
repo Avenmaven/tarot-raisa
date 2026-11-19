@@ -332,3 +332,49 @@ h2 { margin-top: 14px; font-size: clamp(2.2rem, 3.9vw, 3.5rem); line-height: 1.0
   .svc__icon { margin-top: 28px; }
   .pillars { padding-top: 30px; }
 }
+
+/* ================= контраст: ничего бледного на светлом ================= */
+:root { --ink: #231C19; --ink-2: #4A3D34; --line: rgba(42, 35, 32, 0.3); --gold: #8A6326; }
+body { font-weight: 500; font-size: 20px; }
+.kicker { font-weight: 500; font-size: 1.2rem; }
+.hero__lead, .hero__note, .svc p, .steps p, .faq__answer, .dim { color: var(--ink-2); }
+.band-wine .dim, .band-dark .dim { color: rgba(243, 231, 211, 0.78); }
+.fine { color: var(--ink-2); }
+.band-wine .fine { color: rgba(243, 231, 211, 0.7); }
+.link-line, .btn { font-weight: 500; }
+.site-nav .link-line { font-size: 0.74rem; }
+
+/* арки с услугами: залиты вином, золотой контур */
+.pillars { padding: 80px 0 110px; }
+.pillar { border: 1px solid var(--gold-l); background: linear-gradient(170deg, var(--wine-2) 0%, var(--wine) 55%, var(--char) 100%); color: var(--cream); box-shadow: 0 26px 50px -26px rgba(78, 29, 42, 0.75); outline: 1px solid rgba(138, 99, 38, 0.5); outline-offset: 7px; }
+.pillar__icon { color: var(--gold-l); }
+.pillar__icon svg { width: 38px; height: 38px; stroke-width: 1.1; }
+.pillar__n { color: var(--gold-l); font-size: 0.95rem; }
+.pillar__t { color: var(--cream); font-size: 1.5rem; font-weight: 500; max-width: 11ch; }
+@media (hover: hover) and (pointer: fine) { .pillar:hover { background: linear-gradient(170deg, #7a3244 0%, var(--wine-2) 55%, var(--wine) 100%); border-color: #fff3da; transform: translateY(-6px); } }
+
+/* направления: карточки плотнее */
+.svcs { border-color: var(--line); background: #FBF6EC; box-shadow: 0 30px 60px -40px rgba(60, 40, 20, 0.45); }
+.svc h3 { font-size: 1.7rem; }
+.svc p { font-size: 1.08rem; }
+.steps span { color: var(--gold); }
+.marquee { background: var(--char); border-color: transparent; }
+.marquee span { color: var(--cream); }
+.marquee b { color: var(--gold-l); }
+
+/* галерея: её студийные фото на тёмном */
+.gallery { padding: 140px 0; }
+.gallery__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 34px; margin-top: 64px; }
+.gallery .arch { aspect-ratio: 3 / 4.1; outline: 1px solid rgba(233, 201, 141, 0.45); outline-offset: 9px; background: #000; }
+.gallery .arch:nth-child(even) { margin-top: 56px; }
+.gallery .arch img { object-position: 50% 12%; }
+.love--wine .love__media::after { background: linear-gradient(to right, var(--wine) 0%, rgba(78, 29, 42, 0.62) 40%, rgba(78, 29, 42, 0.2) 100%), linear-gradient(to top, rgba(78, 29, 42, 0.75), transparent 45%); }
+@media (max-width: 1000px) {
+  .pillars { padding: 50px 0 80px; }
+  .pillars__grid { gap: 22px 18px; }
+  .pillar__t { font-size: 1.25rem; }
+  .gallery { padding: 96px 0; }
+  .gallery__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px 22px; margin-top: 44px; }
+  .gallery .arch:nth-child(even) { margin-top: 34px; }
+  .love--wine .love__media::after { background: linear-gradient(to top, var(--wine) 2%, transparent 60%); }
+}
