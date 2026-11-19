@@ -108,6 +108,24 @@
     if (painWa) painWa.href = waUrl(picked.length ? 'Моя ситуация: ' + picked.join('; ') + '.' : 'Хочу разобраться в своей ситуации.');
   }));
 
+  /* ---- ролики: играют без звука, пока видны; отзывы не звучат одновременно ---- */
+  const loops = Array.from(document.querySelectorAll('video[data-loop]'));
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (loops.length && 'IntersectionObserver' in window && !still) {
+    const vio = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        const v = e.target;
+        if (e.isIntersecting) { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+        else v.pause();
+      });
+    }, { threshold: 0.35 });
+    loops.forEach((v) => vio.observe(v));
+  } else {
+    loops.forEach((v) => { v.controls = true; });
+  }
+  const talkies = Array.from(document.querySelectorAll('video[controls]'));
+  talkies.forEach((v) => v.addEventListener('play', () => talkies.forEach((o) => { if (o !== v) o.pause(); })));
+
   /* ---- защита от копирования ---- */
   ['contextmenu', 'dragstart', 'copy', 'cut'].forEach((type) => {
     document.addEventListener(type, (e) => e.preventDefault());
