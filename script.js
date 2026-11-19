@@ -1,130 +1,154 @@
 (() => {
   'use strict';
 
-  const WA = 'https://wa.me/79181703656?text=';
-  const HELLO = 'Здравствуйте, Раиса Владимировна! ';
-  const pad = (n) => String(n).padStart(2, '0');
-  const waUrl = (text) => WA + encodeURIComponent(HELLO + text);
+  const root = document.documentElement;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- появление блоков при прокрутке ---- */
-  const revealEls = document.querySelectorAll('[data-reveal]');
+  /* ---- заголовки: каждое слово в свою обёртку, чтобы проявлять из размытия ---- */
+  document.querySelectorAll('[data-blur]').forEach((el) => {
+    let n = 0;
+    const walk = (node) => {
+      Array.from(node.childNodes).forEach((child) => {
+        if (child.nodeType === 3) {
+          const frag = document.createDocumentFragment();
+          child.textContent.split(/(\s+)/).forEach((part) => {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.append(' '); return; }
+            const s = document.createElement('span');
+            s.className = 'w';
+            s.style.setProperty('--w', n);
+            n += 1;
+            s.textContent = part;
+            frag.append(s);
+          });
+          child.replaceWith(frag);
+        } else if (child.nodeType === 1) {
+          walk(child);
+        }
+      });
+    };
+    walk(el);
+  });
+
+  /* ---- появление при прокрутке: блоки, заголовки, фото-шторки ---- */
+  const watch = document.querySelectorAll('[data-reveal], [data-blur]:not([data-blur-hero]), [data-wipe]');
   if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
       });
-    }, { rootMargin: '0px 0px -6% 0px' });
-    revealEls.forEach((el) => io.observe(el));
+    }, { rootMargin: '0px 0px -10% 0px' });
+    watch.forEach((el) => io.observe(el));
   } else {
-    revealEls.forEach((el) => el.classList.add('is-in'));
+    watch.forEach((el) => el.classList.add('is-in'));
   }
 
-  /* ---- карты с вопросами: тема, вопрос, открытая карта Таро ---- */
-  const QUESTIONS = {
-    love: ['Что он на самом деле чувствует?', 'Вернётся ли любимый человек?', 'Когда я встречу своего человека?', 'Что мешает нашим отношениям?'],
-    money: ['Когда станет легче с деньгами?', 'Как увеличить доход?', 'Вернут ли мне долг?', 'Стоит ли сейчас рисковать?'],
-    work: ['Менять ли работу?', 'Открывать ли своё дело?', 'Где мой рост?', 'Соглашаться ли на предложение?'],
-    family: ['Как сохранить семью?', 'Когда в доме будет мир?', 'Что ждёт моих детей?', 'Переезжать ли нам?'],
-  };
-  const ARCANA = ['Шут', 'Маг', 'Верховная жрица', 'Императрица', 'Император', 'Иерофант', 'Влюблённые', 'Колесница', 'Сила', 'Отшельник', 'Колесо фортуны', 'Справедливость', 'Повешенный', 'Смерть', 'Умеренность', 'Дьявол', 'Башня', 'Звезда', 'Луна', 'Солнце', 'Суд', 'Мир'];
-
-  const grid = document.querySelector('[data-qcards]');
-  const result = document.querySelector('[data-qresult]');
-  const resultText = document.querySelector('[data-qtext]');
-  const resultWa = document.querySelector('[data-qwa]');
-  const tabs = Array.from(document.querySelectorAll('[data-topic]'));
-
-  const shuffled = () => {
-    const a = ARCANA.map((_, i) => i);
-    for (let i = a.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
+  /* ---- первый экран открывается после заставки ---- */
+  const reveal = () => {
+    root.classList.add('is-ready');
+    const h = document.querySelector('[data-blur-hero]');
+    if (h) h.classList.add('is-in');
   };
 
-  const fill = (topic) => {
-    if (!grid) return;
-    grid.textContent = '';
-    if (result) result.hidden = true;
-    const deck = shuffled();
-    QUESTIONS[topic].forEach((q, k) => {
-      const card = document.createElement('button');
-      card.type = 'button';
-      card.className = 'qcard';
-      card.setAttribute('aria-label', 'Открыть карту: ' + q);
-      const inner = document.createElement('span');
-      inner.className = 'qcard__in';
-      const face = document.createElement('span');
-      face.className = 'qcard__face';
-      const seal = document.createElement('span');
-      seal.className = 'qcard__seal';
-      seal.textContent = '♥';
-      const text = document.createElement('span');
-      text.className = 'qcard__q';
-      text.textContent = q;
-      face.append(seal, text);
-      const back = document.createElement('span');
-      back.className = 'qcard__back';
-      inner.append(face, back);
-      card.append(inner);
-
-      card.addEventListener('click', () => {
-        const i = deck[k];
-        const show = () => {
-          card.classList.add('is-open');
-          card.setAttribute('aria-label', q + ' Карта: ' + ARCANA[i]);
-          if (result && resultText && resultWa) {
-            resultText.textContent = '';
-            resultText.append('На вопрос «' + q.replace(/\?$/, '') + '?» вам выпала карта ');
-            const b = document.createElement('b');
-            b.textContent = ARCANA[i];
-            resultText.append(b);
-            resultWa.href = waUrl('Мой вопрос: ' + q + ' Мне выпала карта: ' + ARCANA[i] + '. Хочу узнать ответ.');
-            result.hidden = false;
-          }
-        };
-        if (back.firstChild) { show(); return; }
-        const img = new Image();
-        img.alt = 'Карта Таро: ' + ARCANA[i];
-        img.onload = img.onerror = () => { back.append(img); requestAnimationFrame(show); };
-        img.src = 'images/arcana/' + pad(i) + '.jpg';
-      });
-      grid.append(card);
+  /* ---- заставка: золотая карта рисуется линиями, имя из размытия, счётчик, шторки ---- */
+  const scene = () => {
+    const NAME = 'Раиса Владимировна';
+    const WIDTHS = [13, 21, 9, 25, 14, 18];
+    const ORDER = [2, 0, 4, 1, 5, 3];
+    const el = document.createElement('div');
+    el.className = 'scene';
+    el.setAttribute('aria-hidden', 'true');
+    const panels = document.createElement('div');
+    panels.className = 'scene__panels';
+    const pEls = WIDTHS.map((w) => {
+      const p = document.createElement('div');
+      p.className = 'scene__panel';
+      p.style.width = w + '%';
+      panels.append(p);
+      return p;
     });
+    const wrap = document.createElement('div');
+    wrap.className = 'scene__wrap';
+    const parts = [
+      '<rect x="6" y="6" width="108" height="168" rx="8" pathLength="1"/>',
+      '<rect x="14" y="14" width="92" height="152" rx="4" pathLength="1"/>',
+      '<circle cx="60" cy="84" r="24" pathLength="1"/>',
+      '<path d="M70 70a18 18 0 1 0 0 28 14 14 0 1 1 0-28z" pathLength="1"/>',
+      '<path d="M60 48v-8M60 128v-8M96 84h-8M32 84h-8M85 59l-5 5M40 104l-5 5M85 109l-5-5M40 64l-5-5" pathLength="1"/>',
+      '<path d="M60 22l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" pathLength="1"/>',
+      '<path d="M32 148c8-6 14 6 22 0s14 6 22 0 8-3 12-1" pathLength="1"/>',
+      '<path d="M28 30l1 3 3 1-3 1-1 3-1-3-3-1 3-1zM92 30l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" pathLength="1"/>',
+    ];
+    const svg = '<svg class="scene__card" viewBox="0 0 120 180">' + parts.map((p, k) => p.replace('pathLength', 'style="--k:' + k + '" pathLength')).join('') + '</svg>';
+    const name = document.createElement('p');
+    name.className = 'scene__name';
+    const chars = NAME.split('').map((c) => {
+      const s = document.createElement('span');
+      s.textContent = c === ' ' ? ' ' : c;
+      name.append(s);
+      return s;
+    });
+    const meta = document.createElement('div');
+    meta.className = 'scene__meta';
+    const label = document.createElement('span');
+    label.textContent = 'Ясновидящая';
+    const rule = document.createElement('i');
+    const count = document.createElement('span');
+    count.textContent = '000';
+    meta.append(label, rule, count);
+    wrap.innerHTML = svg;
+    wrap.append(name, meta);
+    el.append(panels, wrap);
+    document.body.append(el);
+
+    const TOTAL = 2300;
+    const t0 = performance.now();
+    chars.forEach((s, k) => setTimeout(() => s.classList.add('is-on'), 500 + k * 55));
+    const tick = (now) => {
+      const k = Math.min(1, (now - t0) / TOTAL);
+      count.textContent = String(Math.round(k * 100)).padStart(3, '0');
+      if (k < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    setTimeout(() => {
+      wrap.classList.add('is-out');
+      ORDER.forEach((idx, k) => setTimeout(() => pEls[idx].classList.add('is-up'), 250 + k * 85));
+      setTimeout(reveal, 420);
+      setTimeout(() => el.remove(), 250 + ORDER.length * 85 + 950);
+    }, TOTAL + 150);
   };
-  tabs.forEach((t) => t.addEventListener('click', () => {
-    tabs.forEach((o) => o.setAttribute('aria-pressed', String(o === t)));
-    fill(t.dataset.topic);
-  }));
-  if (tabs.length) fill('love');
 
-  /* ---- «Узнаёте себя?»: отмеченное уходит в сообщение ---- */
-  const pains = Array.from(document.querySelectorAll('[data-pains] button'));
-  const painWa = document.querySelector('[data-pwa]');
-  pains.forEach((b) => b.addEventListener('click', () => {
-    b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
-    const picked = pains.filter((p) => p.getAttribute('aria-pressed') === 'true').map((p) => p.textContent.trim());
-    if (painWa) painWa.href = waUrl(picked.length ? 'Моя ситуация: ' + picked.join('; ') + '.' : 'Хочу разобраться в своей ситуации.');
-  }));
+  let seen = false;
+  try { seen = sessionStorage.getItem('raisa-scene') === '1'; sessionStorage.setItem('raisa-scene', '1'); } catch (_) { /* private mode */ }
+  if (reduced || seen) reveal(); else scene();
+  setTimeout(reveal, 6000); // страховка: первый экран откроется в любом случае
 
-  /* ---- ролики: играют без звука, пока видны; отзывы не звучат одновременно ---- */
-  const loops = Array.from(document.querySelectorAll('video[data-loop]'));
-  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (loops.length && 'IntersectionObserver' in window && !still) {
-    const vio = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        const v = e.target;
-        if (e.isIntersecting) { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {}); }
-        else v.pause();
+  /* ---- шапка: фон после первого экрана, прячется при прокрутке вниз ---- */
+  const header = document.querySelector('[data-header]');
+  const par = Array.from(document.querySelectorAll('[data-parallax]'));
+  let lastY = window.scrollY, ticking = false;
+  const onScroll = () => {
+    ticking = false;
+    const y = window.scrollY;
+    if (header) {
+      header.classList.toggle('is-solid', y > 40);
+      header.classList.toggle('is-hidden', y > 400 && y > lastY);
+    }
+    if (!reduced && window.innerWidth > 1000) {
+      par.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.bottom < 0 || r.top > window.innerHeight) return;
+        el.style.transform = 'translate3d(0,' + (y * parseFloat(el.dataset.parallax)).toFixed(1) + 'px,0)';
       });
-    }, { threshold: 0.35 });
-    loops.forEach((v) => vio.observe(v));
-  } else {
-    loops.forEach((v) => { v.controls = true; });
-  }
-  const talkies = Array.from(document.querySelectorAll('video[controls]'));
-  talkies.forEach((v) => v.addEventListener('play', () => talkies.forEach((o) => { if (o !== v) o.pause(); })));
+    }
+    lastY = y;
+  };
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
+  /* ---- видеоотзывы не звучат одновременно ---- */
+  const vids = Array.from(document.querySelectorAll('video[controls]'));
+  vids.forEach((v) => v.addEventListener('play', () => vids.forEach((o) => { if (o !== v) o.pause(); })));
 
   /* ---- защита от копирования ---- */
   ['contextmenu', 'dragstart', 'copy', 'cut'].forEach((type) => {
@@ -136,13 +160,9 @@
   const hero = document.querySelector('.hero');
   const close = document.querySelector('#zapis');
   if (bar && hero && close && 'IntersectionObserver' in window) {
-    const seen = { hero: true, close: false };
-    const sync = () => {
-      const on = !seen.hero && !seen.close;
-      bar.classList.toggle('is-on', on);
-      bar.inert = !on;
-    };
-    new IntersectionObserver(([e]) => { seen.hero = e.isIntersecting; sync(); }).observe(hero);
-    new IntersectionObserver(([e]) => { seen.close = e.isIntersecting; sync(); }, { rootMargin: '0px 0px -20% 0px' }).observe(close);
+    const s = { hero: true, close: false };
+    const sync = () => { const on = !s.hero && !s.close; bar.classList.toggle('is-on', on); bar.inert = !on; };
+    new IntersectionObserver(([e]) => { s.hero = e.isIntersecting; sync(); }).observe(hero);
+    new IntersectionObserver(([e]) => { s.close = e.isIntersecting; sync(); }, { rootMargin: '0px 0px -20% 0px' }).observe(close);
   }
 })();
