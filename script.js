@@ -146,6 +146,15 @@
   window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   onScroll();
 
+  /* ---- видео с приёма: играет без звука, пока видно ---- */
+  const loops = Array.from(document.querySelectorAll('video[data-loop]'));
+  if (loops.length && 'IntersectionObserver' in window && !reduced) {
+    const vio = new IntersectionObserver((es) => es.forEach((e) => {
+      if (e.isIntersecting) { e.target.muted = true; const pr = e.target.play(); if (pr && pr.catch) pr.catch(() => {}); } else e.target.pause();
+    }), { threshold: 0.3 });
+    loops.forEach((v) => vio.observe(v));
+  } else loops.forEach((v) => { v.controls = true; });
+
   /* ---- видеоотзывы не звучат одновременно ---- */
   const vids = Array.from(document.querySelectorAll('video[controls]'));
   vids.forEach((v) => v.addEventListener('play', () => vids.forEach((o) => { if (o !== v) o.pause(); })));
