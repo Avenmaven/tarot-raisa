@@ -466,3 +466,19 @@ body { background: var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www
   .paid__seal b { font-size: 2.3rem; }
 }
 .paid__card > .paid__glow { position: absolute; }
+
+/* направления: без номеров, всё на одной линии */
+.svc { padding-top: 40px; }
+.svc__icon { margin-top: 0; height: 44px; display: flex; align-items: center; }
+.svc h3 { min-height: 2.24em; display: flex; align-items: flex-start; }
+.svc p { flex: 1; }
+.svc .link-line { margin-top: 24px; }
+@media (max-width: 1000px) {
+  .svc h3 { min-height: 0; }
+  .svc__icon { margin-top: 0; }
+}
+
+/* галерея: одна серия, одна линия */
+.gallery .arch, .gallery .arch:nth-child(even) { margin-top: 0; aspect-ratio: 3 / 4; }
+.gallery .arch img { object-position: 50% 30%; }
+.gallery__grid { align-items: start; }
